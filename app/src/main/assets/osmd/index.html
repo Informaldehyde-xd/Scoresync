@@ -63,7 +63,12 @@
 
       window.osmd = osmd;
     }
-
+    function cursorNext() {
+      if (window.osmd) {
+        window.osmd.cursor.next();
+      }
+    }
+        
     loadScore();
   </script>
 </body>
