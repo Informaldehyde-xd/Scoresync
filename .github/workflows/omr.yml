@@ -17,9 +17,10 @@ jobs:
           wget -q https://github.com/Audiveris/audiveris/releases/download/5.10.2/Audiveris-5.10.2-ubuntu24.04-x86_64.deb -O audiveris.deb
 
       - name: Install Audiveris (with bundled JRE)
-        run: sudo apt-get install -y ./audiveris.deb
-             sudo mkdir -p /usr/share/desktop-directories
-
+        run: |
+          sudo mkdir -p /usr/share/desktop-directories
+          sudo apt-get install -y ./audiveris.deb
+          
       - name: Run OMR on all PDFs in omr-input/
         run: |
           mkdir -p omr-output
