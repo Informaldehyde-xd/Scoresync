@@ -25,7 +25,7 @@ jobs:
         run: |
           mkdir -p omr-output
           for f in omr-input/*.pdf; do
-            audiveris -batch -export -output omr-output "$f"
+            /opt/audiveris/bin/Audiveris -batch -export -output omr-output "$f"
           done
 
       - name: Extract plain MusicXML from .mxl archives
