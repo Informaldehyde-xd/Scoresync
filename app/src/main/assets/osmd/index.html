@@ -68,7 +68,14 @@
         window.osmd.cursor.next();
       }
     }
-        
+    function cursorNext() {
+  if (window.osmd) {
+    window.osmd.cursor.next();
+    console.log("cursor advanced");
+  } else {
+    console.log("osmd not ready yet");
+  }
+    } 
     loadScore();
   </script>
 </body>
