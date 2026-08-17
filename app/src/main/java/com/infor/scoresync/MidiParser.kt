@@ -13,6 +13,13 @@ object MidiParser {
         return parseBytes(bytes)
     }
 
+    fun parse(inputStream: java.io.InputStream): List<MidiNoteEvent> {
+        val bytes = inputStream.readBytes()
+        inputStream.close()
+        return parseBytes(bytes)
+    }
+
+    // ... rest of the object (parseBytes function) stays exactly the same
     private fun parseBytes(data: ByteArray): List<MidiNoteEvent> {
         var pos = 0
 
