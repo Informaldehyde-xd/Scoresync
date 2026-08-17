@@ -9,6 +9,9 @@ import android.view.MotionEvent
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import android.webkit.WebChromeClient
+import android.webkit.ConsoleMessage
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +29,16 @@ class MainActivity : AppCompatActivity() {
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.webViewClient = WebViewClient()
+        webView.webChromeClient = object : WebChromeClient() {
+    override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
+        Toast.makeText(
+            this@MainActivity,
+            "JS: ${consoleMessage.message()}",
+            Toast.LENGTH_LONG
+        ).show()
+        return true
+    }
+        }
 
         val gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onLongPress(e: MotionEvent) {
