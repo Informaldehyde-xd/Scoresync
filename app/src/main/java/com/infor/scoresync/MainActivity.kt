@@ -134,21 +134,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnImportMp3).setOnClickListener {
             pickMp3.launch(arrayOf("audio/mpeg", "audio/mp3", "*/*"))
         }
-        findViewById<Button>(R.id.btnGenerateScore).setOnClickListener {
-            val uri = lastMidiUri
-            if (uri == null) {
-                Toast.makeText(this, "Import a MIDI file first", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val stream = contentResolver.openInputStream(uri)
-            if (stream != null) {
-                val xml = MidiToMusicXml.convert(this, stream)
-                pushXmlToWebView(xml)
-                resetSequence()
-                Toast.makeText(this, "Score generated from MIDI", Toast.LENGTH_SHORT).show()
-            }
-        }
-
+        
         findViewById<Button>(R.id.btnPlay).setOnClickListener { playSequence() }
         findViewById<Button>(R.id.btnStop).setOnClickListener { stopSequence() }
         findViewById<Button>(R.id.btnReset).setOnClickListener { resetSequence() }
