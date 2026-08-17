@@ -73,6 +73,13 @@
   osmd.cursor.show();
   window.osmd = osmd;
     }
+    function resetCursor() {
+  if (window.osmd) {
+    window.osmd.cursor.reset();
+    window.osmd.cursor.show();
+    console.log("cursor reset");
+  }
+    }
     function cursorNext() {
   if (window.osmd) {
     window.osmd.cursor.next();
