@@ -52,6 +52,13 @@
   </part>
 </score-partwise>`;
 
+    async function loadMusicXml(xmlString) {
+  if (!window.osmd) return;
+  await window.osmd.load(xmlString);
+  window.osmd.render();
+  window.osmd.cursor.show();
+  console.log("new score loaded");
+    }
     async function loadScore() {
       const osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("osmd-container", {
         autoResize: false,
