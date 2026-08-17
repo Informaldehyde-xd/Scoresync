@@ -60,18 +60,12 @@
   console.log("new score loaded");
     }
     async function loadScore() {
-      const osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("osmd-container", {
-        autoResize: false,
-        backend: "svg",
-        drawTitle: true,
-        cursorsOptions: [
-          {
-            type: 0,
-            color: "#33e02f",
-            alpha: 0.5,
-            follow: true
-          }
-        ]
+  const osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("osmd-container", {
+    autoResize: false,
+    backend: "svg",
+    drawTitle: true,
+    renderSingleHorizontalStaffline: true,
+    followCursor: true
   });
 
   await osmd.load(musicXml);
