@@ -90,6 +90,9 @@ class MainActivity : AppCompatActivity() {
 
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
+        webView.settings.setSupportZoom(true)
+        webView.settings.builtInZoomControls = true
+        webView.settings.displayZoomControls = false
         webView.webViewClient = WebViewClient()
         webView.webChromeClient = object : WebChromeClient() {
             override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
