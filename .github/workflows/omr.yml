@@ -1,0 +1,44 @@
+name: PDF to MusicXML (Audiveris OMR)
+
+on:
+  push:
+    paths:
+      - 'omr-input/**.pdf'
+  workflow_dispatch:
+
+jobs:
+  omr:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Audiveris
+        run: |
+          wget -q https://github.com/Audiveris/audiveris/releases/download/5.10.2/Audiveris-5.10.2-ubuntu24.04-x86_64.deb -O audiveris.deb
+
+      - name: Install Audiveris (with bundled JRE)
+        run: sudo apt-get install -y ./audiveris.deb
+
+      - name: Run OMR on all PDFs in omr-input/
+        run: |
+          mkdir -p omr-output
+          for f in omr-input/*.pdf; do
+            audiveris -batch -export -output omr-output "$f"
+          done
+
+      - name: Extract plain MusicXML from .mxl archives
+        run: |
+          mkdir -p omr-final
+          find omr-output -name "*.mxl" | while read mxl; do
+            base=$(basename "$mxl" .mxl)
+            mkdir -p "/tmp/$base"
+            unzip -o "$mxl" -d "/tmp/$base"
+            xmlfile=$(find "/tmp/$base" -name "*.xml" ! -name "container.xml" | head -n 1)
+            cp "$xmlfile" "omr-final/$base.musicxml"
+          done
+
+      - name: Upload MusicXML
+        uses: actions/upload-artifact@v4
+        with:
+          name: musicxml-output
+          path: omr-final/
