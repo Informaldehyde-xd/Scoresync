@@ -18,6 +18,7 @@ jobs:
 
       - name: Install Audiveris (with bundled JRE)
         run: sudo apt-get install -y ./audiveris.deb
+             sudo mkdir -p /usr/share/desktop-directories
 
       - name: Run OMR on all PDFs in omr-input/
         run: |
