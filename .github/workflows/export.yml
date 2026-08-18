@@ -1,0 +1,45 @@
+name: Export Video
+
+on:
+  push:
+    paths:
+      - 'export-input/config.json'
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Chromium dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libnss3 libatk-bridge2.0-0 libgtk-3-0 libgbm1 libasound2t64 libxss1
+
+      - name: Install ffmpeg
+        run: sudo apt-get install -y ffmpeg
+
+      - name: Install npm dependencies
+        working-directory: export
+        run: npm install
+
+      - name: Render frames
+        working-directory: export
+        run: node render.js ../export-input/song.musicxml ../export-input/song.mid ../export-input/config.json ../export-output
+
+      - name: Combine frames into video with audio
+        run: |
+          cd export-output
+          ffmpeg -y -framerate 24 -i frames/frame_%06d.png -i ../export-input/song.mp3 -c:v libx264 -pix_fmt yuv420p -c:a aac -shortest output.mp4
+
+      - name: Upload video
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-output
+          path: export-output/output.mp4

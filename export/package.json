@@ -1,0 +1,9 @@
+{
+  "name": "scoresync-export",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "puppeteer": "^22.0.0",
+    "midi-file": "^1.2.4"
+  }
+}

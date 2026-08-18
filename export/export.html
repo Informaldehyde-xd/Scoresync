@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    #osmd-container {
+      position: relative;
+      white-space: nowrap;
+    }
+  </style>
+  <script src="opensheetmusicdisplay.min.js"></script>
+</head>
+<body>
+  <div id="osmd-container"></div>
+  <script>
+    window.osmdReady = false;
+
+    window.loadScoreForExport = async function(xmlString) {
+      const osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay("osmd-container", {
+        autoResize: false,
+        backend: "svg",
+        drawTitle: true,
+        renderSingleHorizontalStaffline: true,
+        followCursor: false,
+        cursorsOptions: [{ type: 0, color: "#33e02f", alpha: 0.5, follow: false }]
+      });
+      await osmd.load(xmlString);
+      osmd.render();
+      osmd.cursor.show();
+      window.osmd = osmd;
+      window.osmdReady = true;
+    };
+
+    window.cursorNextForExport = function() {
+      if (window.osmd) window.osmd.cursor.next();
+    };
+
+    window.scrollToCursorForExport = function() {
+      if (!window.osmd || !window.osmd.cursor || !window.osmd.cursor.cursorElement) return;
+      const rect = window.osmd.cursor.cursorElement.getBoundingClientRect();
+      const container = document.getElementById('osmd-container');
+      const currentMatch = container.style.transform.match(/-?\d+(\.\d+)?/);
+      const currentX = currentMatch ? parseFloat(currentMatch[0]) : 0;
+      const targetX = currentX - (rect.left - 1920 / 2 + rect.width / 2);
+      container.style.transform = `translateX(${Math.min(0, targetX)}px)`;
+    };
+  </script>
+</body>
+</html>
